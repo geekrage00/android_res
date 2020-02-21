@@ -22,3 +22,7 @@ Route::get("/tes", function () {
 });
 
 Route::get('/products','ProductController@getAllProducts')->name('products');
+Route::post('/products','ProductController@saveProduct')->name('products.save');
+
+
+Route::get('/categories','CategoriesController@getAllCategories');
