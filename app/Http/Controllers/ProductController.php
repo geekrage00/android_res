@@ -36,7 +36,7 @@ class ProductController extends Controller
                 "merchantId"=>$r->merchantId
             ];
             $response = [
-                "image"=> $image
+                "data"=> $data
             ];
 
         }
@@ -47,9 +47,7 @@ class ProductController extends Controller
             $image = str_replace(' ', '+', $image);
             $imageName = 'image_' . time() . '.' . 'png'; //generating unique file name;
             Storage::disk('public')->put('images/products/'.$imageName,base64_decode($image));
-            $response = [
-                "image"=>$imageName
-            ];
+
             $data = [
                 "productName"=>$r->productName,
                 "productSlug"=>Str::slug($r->productName),
@@ -57,6 +55,9 @@ class ProductController extends Controller
                 "productImage"=>'/images/products/'.$imageName,
                 "categoryId"=>$r->categoryId,
                 "merchantId"=>$r->merchantId
+            ];
+            $response = [
+                "data"=>$data
             ];
         }
         //if($r->productImage)
