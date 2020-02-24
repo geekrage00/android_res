@@ -67,4 +67,13 @@ class ProductController extends Controller
 
         return response()->json($response,200);
     }
+
+    public function getProductBySlug($slug){
+        $product = Product::bySlug($slug)->with('merchant')->with('category')->firstOrFail();
+        $response = [
+            "data"=>$product
+        ];
+        return response()->json($response,200);
+
+    }
 }

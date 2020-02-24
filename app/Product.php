@@ -27,6 +27,10 @@ class Product extends Model
         return $this->belongsTo('App\Merchant', 'merchantId', 'merchantId');
     }
 
+    public function scopeBySlug($query,$slug){
+        return $query->where('ProductSlug',$slug);
+    }
+
     public function scopeOrderedBy($query,$column = 'newest',$type='desc'){
         switch($column){
             case 'name':
