@@ -32,6 +32,8 @@ class ProductController extends Controller
                 "productSlug"=>Str::slug($r->productName),
                 "productQty"=>$r->productQty,
                 "productImage"=>null,
+                "productPrice"=>$r->productPrice,
+                "productDesc"=>$r->productDesc,
                 "categoryId"=>$r->categoryId,
                 "merchantId"=>$r->merchantId
             ];
@@ -53,6 +55,8 @@ class ProductController extends Controller
                 "productSlug"=>Str::slug($r->productName),
                 "productQty"=>$r->productQty,
                 "productImage"=>'/images/products/'.$imageName,
+                "productPrice"=>$r->productPrice,
+                "productDesc"=>$r->productDesc,
                 "categoryId"=>$r->categoryId,
                 "merchantId"=>$r->merchantId
             ];
