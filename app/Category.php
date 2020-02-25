@@ -8,7 +8,7 @@ class Category extends Model
 {
     //
     protected $table = "categories";
-    protected $primary_key = "categoryId";
+    protected $primaryKey = "categoryId";
     protected $fillable = ["categoryName"];
 
     public function products()

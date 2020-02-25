@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Merchant extends Model
 {
-    protected $primary_key = "merchantId";
+    protected $primaryKey = "merchantId";
     protected $table = "merchants";
     protected $fillable =["merchantName","merchantSlug"];
 
