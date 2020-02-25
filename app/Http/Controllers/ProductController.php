@@ -78,6 +78,14 @@ class ProductController extends Controller
             "data"=>$product
         ];
         return response()->json($response,200);
+    }
 
+    public function deleteProductById($id){
+        $product = Product::findOrFail($id);
+        $product->delete();
+        $response = [
+            "data"=>$product
+        ];
+        return response()->json($response,200);
     }
 }

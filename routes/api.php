@@ -25,5 +25,7 @@ Route::get('/products','ProductController@getAllProducts')->name('products');
 Route::get('/product/{slug}','ProductController@getProductBySlug')->name('product.by.slug');
 Route::post('/products','ProductController@saveProduct')->name('products.save');
 
-
 Route::get('/categories','CategoriesController@getAllCategories');
+
+//hapus product
+Route::delete('/product/{id}', 'ProductController@deleteProductById');
