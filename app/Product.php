@@ -15,7 +15,9 @@ class Product extends Model
     "productQty",
     "productImage",
     "categoryId",
-    "merchantId"];
+    "merchantId",
+    "productPrice",
+    "productDesc"];
 
     public function category()
     {
