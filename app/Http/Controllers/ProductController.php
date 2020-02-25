@@ -80,6 +80,14 @@ class ProductController extends Controller
         return response()->json($response,200);
     }
 
+    public function getProductById($id){
+        $product = Product::with('merchant')->with('category')->findOrFail($id);
+        $response = [
+            "data"=>$product
+        ];
+        return response()->json($response,200);
+    }
+
     public function deleteProductById($id){
         $product = Product::findOrFail($id);
         $product->delete();

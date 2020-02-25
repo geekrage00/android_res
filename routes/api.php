@@ -23,6 +23,8 @@ Route::get("/tes", function () {
 
 Route::get('/products','ProductController@getAllProducts')->name('products');
 Route::get('/product/{slug}','ProductController@getProductBySlug')->name('product.by.slug');
+Route::get('/product-by-id/{id}','ProductController@getProductById')->name('product.by.id');
+
 Route::post('/products','ProductController@saveProduct')->name('products.save');
 
 Route::get('/categories','CategoriesController@getAllCategories');
