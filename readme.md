@@ -57,3 +57,14 @@ To get a product data (detail) by it's ID you can use api link above.
     Example :
          DELETE : http://210.210.154.65:4444/api/product/101/delete
 
+
+
+## Categories
+### Get All Categories
+    http://{baseurl}/api/categories
+    Method : GET
+
+    Example :
+        GET : http://210.210.154.65:4444/api/categories
+
+To retrive all categories, you can use api link above
