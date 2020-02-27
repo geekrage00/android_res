@@ -7,6 +7,7 @@ use App\Product;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {
     //
@@ -22,6 +23,16 @@ class ProductController extends Controller
     }
 
     public function saveProduct(Request $r){
+        $validator = Validator::make($r->all(), [
+            'productName' => 'bail|required|string',
+            'productQty' => 'bail|required',
+            'productPrice' =>'bail|required',
+            'categoryId' =>'bail|required',
+            'merchantId' =>'bail|required',
+           ]);
+        if ($validator->fails()) {
+            return response()->json($validator->messages());
+       }
         //return $r->json()->all();
         //return $r->all();
         //Product::create($r->json()->all());
@@ -69,18 +80,31 @@ class ProductController extends Controller
 
         Product::create($data);
 
-        return response()->json($response,200);
+        return response()->json($r->all(),200);
     }
 
 
 
 
     public function updateProduct(Request $r, $id){
+
+
         $product = Product::find($id);
         $oldImage = $product->productImage;
 
-        $image = $r->productImage? $r->productImage : $oldImage;
-        if($image == $oldImage){
+        $validator = Validator::make($r->all(), [
+            'productName' => 'bail|required|string',
+            'productQty' => 'bail|required',
+            'productPrice' =>'bail|required',
+            'categoryId' =>'bail|required',
+            'merchantId' =>'bail|required',
+           ]);
+        if ($validator->fails()) {
+            return response()->json($validator->messages());
+       }
+
+        $image = $r->productImage? $r->productImage : null;
+        if($image == null){
             $data = [
                 "productName"=>$r->productName,
                 "productSlug"=>Str::slug($r->productName)."-".self::generateRandomString(),
