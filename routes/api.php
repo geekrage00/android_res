@@ -33,6 +33,9 @@ Route::get('/product-by-id/{id}','ProductController@getProductById')->name('prod
 //post product
 Route::post('/products','ProductController@saveProduct')->name('products.save');
 
+//put product
+Route::put('/product/{id}/update', 'ProductController@updateProduct')->name('products.update');
+
 //get all categories
 Route::get('/categories','CategoriesController@getAllCategories');
 
