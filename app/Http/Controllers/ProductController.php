@@ -10,8 +10,6 @@ use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {
-    //
-
     public function getAllProducts(Request $r){
         $orderBy = $r->orderBy? $r->orderBy : 'newest'; //default 'updated_at'
         $orderType = $r->orderType ? $r->orderType : 'desc'; //default 'desc'

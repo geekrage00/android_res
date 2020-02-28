@@ -13,4 +13,8 @@ class Merchant extends Model
     public function products(){
         return $this->hasMany('App\Product', 'merchantId', 'merchantId');
     }
+
+    public function user(){
+        return $this->hasOne('App\User','id','userId');
+    }
 }
