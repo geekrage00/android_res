@@ -28,8 +28,13 @@ class ProductController extends Controller
             'categoryId' =>'bail|required',
             'merchantId' =>'bail|required',
            ]);
+        $response = [
+            "code"=>400,
+            "message"=>$validator->messages()
+        ];
+
         if ($validator->fails()) {
-            return response()->json($validator->messages());
+            return response()->json($response,400);
        }
         //return $r->json()->all();
         //return $r->all();
@@ -77,8 +82,13 @@ class ProductController extends Controller
 
 
         Product::create($data);
+        $response = [
+            "code"=>200,
+            "message"=>"Success add product",
+            "data"=>$r->all()
+        ];
 
-        return response()->json($r->all(),200);
+        return response()->json($response,200);
     }
 
 
