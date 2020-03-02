@@ -34,7 +34,7 @@ class ProductController extends Controller
         ];
 
         if ($validator->fails()) {
-            return response()->json($response,200);
+            return response()->json($response,202);
        }
         //return $r->json()->all();
         //return $r->all();
