@@ -34,7 +34,7 @@ class ProductController extends Controller
         ];
 
         if ($validator->fails()) {
-            return response()->json($response,400);
+            return response()->json($response,422);
        }
         //return $r->json()->all();
         //return $r->all();
@@ -169,6 +169,7 @@ class ProductController extends Controller
     public function getProductById($id){
         $product = Product::with('merchant')->with('category')->findOrFail($id);
         $response = [
+            "code"=>200,
             "data"=>$product
         ];
         return response()->json($response,200);
@@ -178,6 +179,8 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
         $response = [
+            "code"=>200,
+            "message"=>"Success Delete Product",
             "data"=>$product
         ];
         return response()->json($response,200);
