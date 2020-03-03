@@ -15,6 +15,8 @@ class RenameIsMerchantToIsMerchantInUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
+            $table->dropColumn("isMerchant");
+            $table->string("is_merchant");
         });
     }
 
@@ -27,6 +29,8 @@ class RenameIsMerchantToIsMerchantInUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
+            $table->dropColumn("is_merchant");
+            $table->string("isMerchant");
         });
     }
 }
