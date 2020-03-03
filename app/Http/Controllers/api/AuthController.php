@@ -46,13 +46,19 @@ class AuthController extends ResponseController
             ]);
         }
 
+        $scope = 'buy';
+
+        if($user->is_merchant == 0){
+            $scope = 'do-anything';
+        }
+
         $params = [
             'grant_type'=>'password',
             'client_id'=>$this->client->id,
             'client_secret'=>$this->client->secret,
             'username'=>request('email'),
             'password'=>request('password'),
-            'scope'=>'*'
+            'scope'=>$scope
         ];
 
         $r->request->add($params);
@@ -93,7 +99,7 @@ class AuthController extends ResponseController
             }
             else{
                 $user = Auth::user();
-                if($user->isMerchant()){
+                if($user->is_merchant){
                     $scope = 'do-anything';
                 }
                 else{
@@ -162,7 +168,7 @@ class AuthController extends ResponseController
         {
             //$id = $request->user()->id;
             $user = $request->user();
-            if($user->isMerchant()){
+            if($user->is_merchant){
                 $products = Product::where('merchantId',$user->merchant->merchantId)->get();
                 $response =[
                     'code'=>200,
@@ -172,7 +178,7 @@ class AuthController extends ResponseController
                     ];
                 return $this->sendResponse($response);
             }
-            elseif(!$user->isMerchant()){
+            elseif(!$user->is_merchant){
                 return $this->sendResponse($user);
             }
             else{
