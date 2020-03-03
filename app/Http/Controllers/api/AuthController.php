@@ -24,9 +24,10 @@ class AuthController extends ResponseController
     //
     public function signup(Request $r){
         $validator = Validator::make($r->all(),[
-            'name'=>'bail|required|string',
+            'first_name'=>'bail|required|string',
+            'last_name'=>'bail|required|string',
             'email'=>'bail|required|string|email|unique:users',
-            'password'=>'required',
+            'password'=>'required|min:8',
             'confirm_password'=>'required|same:password',
         ]);
 
@@ -68,7 +69,7 @@ class AuthController extends ResponseController
         {
             $validator = Validator::make($request->all(), [
                 'email' => 'required|string|email',
-                'password' => 'required'
+                'password' => 'required|min:8'
             ]);
 
             if($validator->fails()){
