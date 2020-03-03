@@ -43,7 +43,7 @@ class User extends Authenticatable
     }
 
     public function scopeIsMerchant($query){
-        return $query->where('isMerchant',true);
+        return $query->where('is_merchant',true);
     }
 
 
