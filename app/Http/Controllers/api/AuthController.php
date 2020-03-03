@@ -162,7 +162,7 @@ class AuthController extends ResponseController
         {
             //$id = $request->user()->id;
             $user = $request->user();
-            if($user->isMerchant){
+            if($user->isMerchant()){
                 $products = Product::where('merchantId',$user->merchant->merchantId)->get();
                 $response =[
                     'code'=>200,
@@ -172,7 +172,7 @@ class AuthController extends ResponseController
                     ];
                 return $this->sendResponse($response);
             }
-            elseif(!$user->isMerchant){
+            elseif(!$user->isMerchant()){
                 return $this->sendResponse($user);
             }
             else{
