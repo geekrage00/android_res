@@ -2,13 +2,14 @@
 
 namespace App;
 
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasApiTokens,Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -38,6 +39,12 @@ class User extends Authenticatable
     ];
 
     public function merchant(){
-        return $this->belongsTo('App\Merchant','userId','id');
+        return $this->hasOne('App\Merchant','user_id','id');
     }
+
+    public function scopeIsMerchant($query){
+        return $query->where('isMerchant',true);
+    }
+
+
 }

@@ -15,6 +15,6 @@ class Merchant extends Model
     }
 
     public function user(){
-        return $this->hasOne('App\User','id','userId');
+        return $this->belongsTo('App\User','id','user_id');
     }
 }

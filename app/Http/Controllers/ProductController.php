@@ -22,8 +22,8 @@ class ProductController extends Controller
 
     public function saveProduct(Request $r){
         $validator = Validator::make($r->all(), [
-            'productName' => 'bail|required|string',
-            'productQty' => 'bail|required',
+            'productName' => 'required|string',
+            'productQty' => 'required|integer|min:1',
             'productPrice' =>'bail|required',
             'categoryId' =>'bail|required',
             'merchantId' =>'bail|required',

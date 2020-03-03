@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -52,6 +53,15 @@ class Handler extends ExceptionHandler
                 'data' => 'Resource not found'
             ], 404);
         }
+        elseif($request->expectsJson()){
+            if($exception instanceof ValidationException){
+                return response()->json([
+                    'message'=>$exception->getMessage(),
+                    'errors'=>$exception->validator->errors()
+                ]);
+            }
+        }
+
         return parent::render($request, $exception);
     }
 }
