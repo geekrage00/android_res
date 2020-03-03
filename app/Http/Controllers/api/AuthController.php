@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Merchant;
 use App\Product;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Laravel\Passport\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\api\ResponseController as ResponseController;
@@ -37,6 +38,13 @@ class AuthController extends ResponseController
         $input = $r->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
+        if($r->merchant_name){
+            Merchant::create([
+                'merchantName'=>$r->merchant_ame,
+                'merchantSlug'=>Str::slug($r->merchant_name),
+                'user_id'=>$user->id
+            ]);
+        }
 
         $params = [
             'grant_type'=>'password',
