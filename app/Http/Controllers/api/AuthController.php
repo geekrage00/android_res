@@ -93,7 +93,7 @@ class AuthController extends ResponseController
             }
             else{
                 $user = Auth::user();
-                if($user->isMerchant){
+                if($user->isMerchant()){
                     $scope = 'do-anything';
                 }
                 else{
