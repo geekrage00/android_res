@@ -8,7 +8,7 @@ class Merchant extends Model
 {
     protected $primaryKey = "merchantId";
     protected $table = "merchants";
-    protected $fillable =["merchantName","merchantSlug"];
+    protected $fillable =["merchantName","merchantSlug","user_id"];
 
     public function products(){
         return $this->hasMany('App\Product', 'merchantId', 'merchantId');
