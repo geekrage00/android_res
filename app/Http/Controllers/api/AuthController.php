@@ -40,7 +40,7 @@ class AuthController extends ResponseController
         $user = User::create($input);
         if($r->merchant_name){
             Merchant::create([
-                'merchantName'=>$r->merchant_ame,
+                'merchantName'=>$r->merchant_name,
                 'merchantSlug'=>Str::slug($r->merchant_name),
                 'user_id'=>$user->id
             ]);
