@@ -48,7 +48,7 @@ class AuthController extends ResponseController
 
         $scope = 'buy';
 
-        if($user->is_merchant == 0){
+        if($user->is_merchant){
             $scope = 'do-anything';
         }
 
