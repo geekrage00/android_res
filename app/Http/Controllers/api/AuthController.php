@@ -163,11 +163,16 @@ class AuthController extends ResponseController
             return Route::dispatch($proxy);
         }
 
+        public function verifyToken(Request $request){
+            return response()->json(['message'=>'token is valid'],200);
+        }
+
         //getuser
         public function getUser(Request $request)
         {
             //$id = $request->user()->id;
-            $user = $request->user();
+            //$user = $request->user();
+            $user = Auth::user();
             if($user->is_merchant){
                 $products = Product::where('merchantId',$user->merchant->merchantId)->get();
                 $response =[

@@ -20,6 +20,7 @@ Route::group([ 'prefix' => 'auth'], function (){
     });
     Route::group(['middleware' => 'auth:api'], function() {
         Route::get('logout', 'api\AuthController@logout');
+        Route::get('verify', 'api\AuthController@verifyToken');
         Route::get('getuser', 'api\AuthController@getUser')->middleware(['scopes:do-anything']);
     });
 });
