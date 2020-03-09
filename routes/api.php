@@ -22,7 +22,18 @@ Route::group([ 'prefix' => 'auth'], function (){
         Route::get('logout', 'api\AuthController@logout');
         Route::get('verify', 'api\AuthController@verifyToken');
         Route::get('getuser', 'api\AuthController@getUser')->middleware(['scopes:do-anything']);
+
     });
+
+});
+
+Route::group([ 'prefix' => 'merchant'], function (){
+    Route::group(['middleware' => 'auth:api'], function() {
+        Route::get('/products', 'MerchantController@getAllProductOwnedByMerchant')->middleware(['scopes:do-anything']);
+        //post product
+        Route::post('/products','MerchantController@saveProduct')->name('merchant.products.save')->middleware(['scopes:do-anything']);;
+    });
+
 });
 
 
