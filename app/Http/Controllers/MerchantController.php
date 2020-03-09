@@ -114,74 +114,100 @@ class MerchantController extends ResponseController
         }
 
     }
-
-
-
-
     public function updateProduct(Request $r, $id){
+        $user = Auth::user();
+        if($user->is_merchant){
+            $product = Product::find($id);
+            $oldImage = $product->productImage;
+
+            $validator = Validator::make($r->all(), [
+                'productName' => 'bail|required|string',
+                'productQty' => 'bail|required',
+                'productPrice' =>'bail|required',
+                'categoryId' =>'bail|required',
+                'merchantId' =>'bail|required',
+            ]);
+            if ($validator->fails()) {
+                return response()->json($validator->messages());
+            }
+
+            $image = $r->productImage? $r->productImage : null;
+            if($image == null){
+                $data = [
+                    "productName"=>$r->productName,
+                    "productSlug"=>Str::slug($r->productName)."-".self::generateRandomString(),
+                    "productQty"=>$r->productQty,
+                    "productImage"=>$oldImage,
+                    "productPrice"=>$r->productPrice,
+                    "productDesc"=>$r->productDesc,
+                    "categoryId"=>$r->categoryId,
+                    "merchantId"=>$r->merchantId
+                ];
+                $response = [
+                    "data"=> $data
+                ];
+
+            }
+            else{
+                $image = $r->productImage;  // your base64 encodedph
+                preg_match("/data:image\/(.*?);/",$image,$image_extension); // extract the image extension
+                $image = preg_replace('/data:image\/(.*?);base64,/','',$image); // remove the type part
+                $image = str_replace(' ', '+', $image);
+                $imageName = 'image_' . time() . '.' . 'png'; //generating unique file name;
+                Storage::disk('public')->put('images/products/'.$imageName,base64_decode($image));
+
+                $data = [
+                    "productName"=>$r->productName,
+                    "productSlug"=>Str::slug($r->productName)."-".self::generateRandomString(),
+                    "productQty"=>$r->productQty,
+                    "productImage"=>'/images/products/'.$imageName,
+                    "productPrice"=>$r->productPrice,
+                    "productDesc"=>$r->productDesc,
+                    "categoryId"=>$r->categoryId,
+                    "merchantId"=>$r->merchantId
+                ];
+                $response = [
+                    "data"=>$data
+                ];
+            }
+            //if($r->productImage)
 
 
-        $product = Product::find($id);
-        $oldImage = $product->productImage;
+            $product->update($data);
 
-        $validator = Validator::make($r->all(), [
-            'productName' => 'bail|required|string',
-            'productQty' => 'bail|required',
-            'productPrice' =>'bail|required',
-            'categoryId' =>'bail|required',
-            'merchantId' =>'bail|required',
-        ]);
-        if ($validator->fails()) {
-            return response()->json($validator->messages());
+            return $this->sendResponse($response);
         }
-
-        $image = $r->productImage? $r->productImage : null;
-        if($image == null){
-            $data = [
-                "productName"=>$r->productName,
-                "productSlug"=>Str::slug($r->productName)."-".self::generateRandomString(),
-                "productQty"=>$r->productQty,
-                "productImage"=>$oldImage,
-                "productPrice"=>$r->productPrice,
-                "productDesc"=>$r->productDesc,
-                "categoryId"=>$r->categoryId,
-                "merchantId"=>$r->merchantId
-            ];
-            $response = [
-                "data"=> $data
-            ];
-
+        elseif(!$user->is_merchant){
+            $error = "You are not a merchant. Become a merchant first !";
+            return $this->sendError($user);
         }
         else{
-            $image = $r->productImage;  // your base64 encodedph
-            preg_match("/data:image\/(.*?);/",$image,$image_extension); // extract the image extension
-            $image = preg_replace('/data:image\/(.*?);base64,/','',$image); // remove the type part
-            $image = str_replace(' ', '+', $image);
-            $imageName = 'image_' . time() . '.' . 'png'; //generating unique file name;
-            Storage::disk('public')->put('images/products/'.$imageName,base64_decode($image));
-
-            $data = [
-                "productName"=>$r->productName,
-                "productSlug"=>Str::slug($r->productName)."-".self::generateRandomString(),
-                "productQty"=>$r->productQty,
-                "productImage"=>'/images/products/'.$imageName,
-                "productPrice"=>$r->productPrice,
-                "productDesc"=>$r->productDesc,
-                "categoryId"=>$r->categoryId,
-                "merchantId"=>$r->merchantId
-            ];
-            $response = [
-                "data"=>$data
-            ];
+            $error = "user not found";
+            return $this->sendResponse($error);
         }
-        //if($r->productImage)
-
-
-        $product->update($data);
-
-        return response()->json($response,200);
     }
+    public function deleteProductById($id){
+        $user = Auth::user();
+        if($user->is_merchant){
+            $product = Product::findOrFail($id);
+            $product->delete();
+            $response = [
+                "code"=>200,
+                "message"=>"Success Delete Product",
+                "data"=>$product
+            ];
+            return $this->sendResponse($response);
+        }
+        elseif(!$user->is_merchant){
+            $error = "You are not a merchant. Become a merchant first !";
+            return $this->sendError($user);
+        }
+        else{
+            $error = "user not found";
+            return $this->sendResponse($error);
+        }
 
+    }
     public function generateRandomString($length = 5) {
         return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
     }
