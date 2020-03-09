@@ -17,7 +17,7 @@ class MerchantController extends ResponseController
         $orderType = $r->orderType ? $r->orderType : 'desc'; //default 'desc'
         $user = Auth::user();
         if($user->is_merchant){
-            $products = Product::where('merchantId',$user->merchant->merchantId)->with('category')->orderedBy($orderBy,$orderType)->get();
+            $products = Product::where('merchantId',$user->merchant->merchantId)->with('merchant')->with('category')->orderedBy($orderBy,$orderType)->get();
             $response =[
                 'data'=>$products
             ];
