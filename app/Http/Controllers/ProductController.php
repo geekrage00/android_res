@@ -25,8 +25,7 @@ class ProductController extends Controller
             'productName' => 'required|string',
             'productQty' => 'required|integer|min:1',
             'productPrice' =>'bail|required',
-            'categoryId' =>'bail|required',
-            'merchantId' =>'bail|required',
+            'categoryId' =>'bail|required'
            ]);
         $response = [
             "code"=>400,
