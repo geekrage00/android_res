@@ -31,7 +31,10 @@ Route::group([ 'prefix' => 'merchant'], function (){
     Route::group(['middleware' => 'auth:api'], function() {
         Route::get('/products', 'MerchantController@getAllProductOwnedByMerchant')->middleware(['scopes:do-anything']);
         //post product
-        Route::post('/products','MerchantController@saveProduct')->name('merchant.products.save')->middleware(['scopes:do-anything']);;
+        Route::post('/products','MerchantController@saveProduct')->name('merchant.products.save')->middleware(['scopes:do-anything']);
+        Route::put('/product/{id}/update','MerchantController@updateProduct')->name('merchant.products.update')->middleware(['scopes:do-anything']);
+        Route::delete('/product/{id}/delete','MerchantController@deleteProductById')->name('merchant.products.delete')->middleware(['scopes:do-anything']);
+
     });
 
 });
