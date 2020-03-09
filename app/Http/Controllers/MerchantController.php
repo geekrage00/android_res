@@ -41,6 +41,7 @@ class MerchantController extends ResponseController
                 'productQty' => 'required|integer|min:1',
                 'productPrice' =>'bail|required',
                 'categoryId' =>'bail|required',
+                'merchantId'=>'bail|required'
             ]);
             $response = [
                 "code"=>400,
@@ -86,7 +87,7 @@ class MerchantController extends ResponseController
                     "productPrice"=>$r->productPrice,
                     "productDesc"=>$r->productDesc,
                     "categoryId"=>$r->categoryId,
-                    "merchantId"=>$r->merchantId
+                    "merchantId"=>$user->merchant->merchantId
                 ];
                 $response = [
                     "data"=>$data
@@ -95,11 +96,11 @@ class MerchantController extends ResponseController
             //if($r->productImage)
 
 
-            Product::create($data);
+            $product = Product::create($data);
             $response = [
                 "code"=>200,
                 "message"=>"Success add product",
-                "data"=>$r->all()
+                "data"=>$product
             ];
 
             return $this->sendResponse($response);
@@ -124,8 +125,7 @@ class MerchantController extends ResponseController
                 'productName' => 'bail|required|string',
                 'productQty' => 'bail|required',
                 'productPrice' =>'bail|required',
-                'categoryId' =>'bail|required',
-                'merchantId' =>'bail|required',
+                'categoryId' =>'bail|required'
             ]);
             if ($validator->fails()) {
                 return response()->json($validator->messages());
@@ -141,7 +141,7 @@ class MerchantController extends ResponseController
                     "productPrice"=>$r->productPrice,
                     "productDesc"=>$r->productDesc,
                     "categoryId"=>$r->categoryId,
-                    "merchantId"=>$r->merchantId
+                    "merchantId"=>$user->merchant->merchantId
                 ];
                 $response = [
                     "data"=> $data
@@ -164,7 +164,7 @@ class MerchantController extends ResponseController
                     "productPrice"=>$r->productPrice,
                     "productDesc"=>$r->productDesc,
                     "categoryId"=>$r->categoryId,
-                    "merchantId"=>$r->merchantId
+                    "merchantId"=>$user->merchant->merchantId
                 ];
                 $response = [
                     "data"=>$data
@@ -189,7 +189,7 @@ class MerchantController extends ResponseController
     public function deleteProductById($id){
         $user = Auth::user();
         if($user->is_merchant){
-            $product = Product::findOrFail($id);
+            $product = Product::findOrFail($id)->where("merchantId",$user->merchant->merchantId);
             $product->delete();
             $response = [
                 "code"=>200,
