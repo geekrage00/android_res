@@ -188,7 +188,7 @@ class MerchantController extends ResponseController
     public function deleteProductById($id){
         $user = Auth::user();
         if($user->is_merchant){
-            $product = Product::findOrFail($id)->where("merchantId",$user->merchant->merchantId);
+            $product = Product::where("merchantId",$user->merchant->merchantId)->where("productId",$id)->firstOrFail();
             $product->delete();
             $response = [
                 "code"=>200,
